@@ -41,12 +41,23 @@
     .hero-bg {
       position: absolute;
       inset: 0;
-      background: url('assets/miniramp_0001.jpg') center / cover no-repeat;
-      filter: brightness(0.22) saturate(0.5);
-      transform: scale(1.06);
-      transition: transform 10s ease;
+      overflow: hidden;
     }
-    .hero:hover .hero-bg { transform: scale(1.01); }
+
+    .hero-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* dark overlay on top of video */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.62);
+    }
 
     .hero-content {
       position: relative;
@@ -324,7 +335,11 @@
 
   <!-- ─ Hero ──────────────────────────────────────────── -->
   <header class="hero">
-    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-bg" aria-hidden="true">
+      <video autoplay loop muted playsinline poster="assets/miniramp_0001.jpg">
+        <source src="assets/ramp_flags.mp4" type="video/mp4">
+      </video>
+    </div>
     <div class="hero-content">
       <p class="eyebrow">Ein DIY-Projekt</p>
       <h1>Backyard<em>Ramp</em></h1>
