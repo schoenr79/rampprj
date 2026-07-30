@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backyard Ramp</title>
+  <meta name="description" content="Baudokumentation einer selbst gebauten Mini Ramp im Hinterhof – von der Idee bis zur ersten Fahrt.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <style>
+    :root {
+      --bg:      #0d0d0d;
+      --surface: #181818;
+      --border:  #272727;
+      --accent:  #f59e0b;
+      --text:    #f0f0f0;
+      --muted:   #777;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    /* ── Hero ───────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100svh;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('assets/miniramp_0001.jpg') center / cover no-repeat;
+      filter: brightness(0.22) saturate(0.5);
+      transform: scale(1.06);
+      transition: transform 10s ease;
+    }
+    .hero:hover .hero-bg { transform: scale(1.01); }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 1.5rem;
+    }
+
+    .eyebrow {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+
+    h1 {
+      font-size: clamp(3.8rem, 15vw, 9.5rem);
+      font-weight: 900;
+      line-height: 0.86;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--accent);
+      display: block;
+    }
+
+    .hero-sub {
+      margin-top: 1.8rem;
+      font-size: clamp(0.88rem, 2vw, 1.05rem);
+      color: var(--muted);
+      max-width: 400px;
+      margin-inline: auto;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      margin-top: 2.2rem;
+      padding: 0.75rem 2.2rem;
+      background: var(--accent);
+      color: #000;
+      font-weight: 800;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: opacity 0.2s;
+    }
+    .hero-cta:hover { opacity: 0.8; }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.55rem;
+      animation: bounce 2.5s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0);   opacity: 0.5; }
+      50%       { transform: translateX(-50%) translateY(9px); opacity: 1;   }
+    }
+
+    /* ── Section header ─────────────────────────────────── */
+    .section-intro {
+      text-align: center;
+      padding: 5.5rem 1.5rem 3rem;
+    }
+
+    .label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.7rem;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    /* ── Gallery wrapper ────────────────────────────────── */
+    .gallery-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1rem 5rem;
+    }
+
+    /* ── Main swiper ────────────────────────────────────── */
+    .main-swiper {
+      width: 100%;
+      border-radius: 5px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .main-swiper .swiper-slide {
+      background: #000;
+    }
+
+    .slide-img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      display: block;
+    }
+
+    .slide-caption {
+      padding: 1.2rem 1.6rem 1.6rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+
+    .slide-num {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+
+    .slide-text {
+      font-size: 0.92rem;
+      color: #b0b0b0;
+      line-height: 1.7;
+    }
+
+    /* swiper controls */
+    .swiper-button-prev,
+    .swiper-button-next {
+      color: var(--accent) !important;
+      --swiper-navigation-size: 1.3rem;
+      background: rgba(0,0,0,0.45);
+      width: 2.6rem !important;
+      height: 2.6rem !important;
+      border-radius: 50%;
+    }
+    .swiper-pagination-bullet          { background: #444 !important; }
+    .swiper-pagination-bullet-active   { background: var(--accent) !important; }
+
+    /* ── Thumbnail swiper ───────────────────────────────── */
+    .thumb-swiper {
+      margin-top: 8px !important;
+      height: 68px;
+    }
+
+    .thumb-swiper .swiper-slide {
+      opacity: 0.3;
+      cursor: pointer;
+      border-radius: 3px;
+      overflow: hidden;
+      transition: opacity 0.2s;
+    }
+    .thumb-swiper .swiper-slide:hover          { opacity: 0.65; }
+    .thumb-swiper .swiper-slide-thumb-active   {
+      opacity: 1;
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
+    .thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── About ──────────────────────────────────────────── */
+    .about {
+      max-width: 660px;
+      margin: 0 auto 6rem;
+      padding: 5rem 1.5rem 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .about .label { margin-bottom: 1.2rem; }
+
+    .about p {
+      color: #909090;
+      line-height: 1.9;
+      font-size: 0.93rem;
+    }
+    .about p + p { margin-top: 1.1rem; }
+
+    /* ── Footer ─────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: #333;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─ Hero ──────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-content">
+      <p class="eyebrow">Ein DIY-Projekt</p>
+      <h1>Backyard<em>Ramp</em></h1>
+      <p class="hero-sub">Vom ersten Brett bis zur ersten Fahrt — der Bau unserer Mini Ramp, Schritt für Schritt dokumentiert.</p>
+      <a href="#gallery" class="hero-cta">Zum Bau</a>
+    </div>
+    <div class="scroll-indicator" aria-hidden="true">
+      <svg width="13" height="21" viewBox="0 0 13 21" fill="none">
+        <rect x=".75" y=".75" width="11.5" height="19.5" rx="5.75" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="6.5" cy="6" r="1.8" fill="currentColor"/>
+      </svg>
+      Scroll
+    </div>
+  </header>
+
+  <!-- ─ Gallery ───────────────────────────────────────── -->
+  <section id="gallery">
+    <div class="section-intro">
+      <p class="label">Baudokumentation</p>
+      <h2>Die Ramp — Schritt für Schritt</h2>
+    </div>
+
+    <div class="gallery-wrap">
+
+      <div class="swiper main-swiper">
+        <div class="swiper-wrapper" id="main-slides"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+
+      <div class="swiper thumb-swiper">
+        <div class="swiper-wrapper" id="thumb-slides"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─ About ─────────────────────────────────────────── -->
+  <section class="about">
+    <p class="label">Über das Projekt</p>
+    <p>Was als spontane Idee an einem Wochenende begann, wurde zu einem mehrwöchigen Bauprojekt im Hinterhof. Ziel war eine vollwertige Mini Ramp aus heimischen Materialien — kompakt, stabil und fahrbereit.</p>
+    <p>Inspiriert von unzähligen Videos und eigenen Skizzen entstand ein Bauplan, der sich während des Baus noch mehrfach ändern sollte. Das Ergebnis spricht für sich — und rollt sich verdammt gut.</p>
+  </section>
+
+  <!-- ─ Footer ─────────────────────────────────────────── -->
+  <footer>
+    <p>Backyard Ramp &mdash; Selbstbauprojekt &nbsp;·&nbsp; Alle Fotos entstanden während des Baus</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    // ── Image list ─────────────────────────────────────────
+    const jpegSet = new Set([62, 73, 79, 80]);
+    const skipSet = new Set([32]);
+    const images  = [];
+
+    for (let i = 1; i <= 80; i++) {
+      if (skipSet.has(i)) continue;
+      const num = String(i).padStart(4, '0');
+      const ext = jpegSet.has(i) ? 'jpeg' : 'jpg';
+      images.push(`miniramp_${num}.${ext}`);
+    }
+
+    // ── Phase captions (one per ~8 images) ────────────────
+    const captions = [
+      'Planung & Material — Die Idee steht, der Bauplan liegt auf dem Tisch. Holz, Schrauben und Werkzeug werden zusammengestellt. Der erste Tag auf der Baustelle.',
+      'Grundkonstruktion — Die ersten Balken werden zurechtgesägt und der Grundrahmen aufgestellt. Maße werden mehrfach kontrolliert, Winkel sorgfältig justiert.',
+      'Rippenwerk — Die charakteristischen Kurvenrippen entstehen. Jede Rippe wird nach Schablone gesägt, ausgerichtet und mit dem Rahmen verschraubt.',
+      'Beplankung — Die erste Lage Sperrholz kommt auf das Rippenwerk. Die Transition bekommt ihre endgültige Form, das Holz biegt sich sanft in die Kurve.',
+      'Zweite Lage & Stabilität — Mehr Schichten, mehr Festigkeit. Die Oberfläche wird gleichmäßiger, die Ramp nimmt spürbar Gewicht und Robustheit an.',
+      'Plattform & Details — Die flache Plattform oben wird gebaut. Geländer, Verstrebungen und alle Sicherheitselemente kommen an ihren Platz.',
+      'Finish-Oberfläche — Die finale Fahroberfläche wird aufgebracht. Siebdruckplatten oder Masonite sorgen für den richtigen Grip und einen sauberen Roll.',
+      'Coping & letzte Hand — Das Metall-Coping wird präzise an der Oberkante gesetzt. Die letzten Schrauben werden gezogen, Unebenheiten ausgeglichen.',
+      'Endspurt — Die Ramp steht vollständig. Abschleifen, Ausbesserungen, ein Anstrich an den Seiten. Der Geruch von frischem Holz liegt in der Luft.',
+      'Session! — Die Ramp ist fertig. Erste vorsichtige Fahrten, erste Tricks, pure Freude im Hinterhof. Es hat sich gelohnt.',
+    ];
+
+    // ── Build slides ───────────────────────────────────────
+    const mainContainer  = document.getElementById('main-slides');
+    const thumbContainer = document.getElementById('thumb-slides');
+    const total = images.length;
+
+    images.forEach((img, i) => {
+      const caption = captions[Math.min(Math.floor(i / 8), captions.length - 1)];
+      const alt     = `Backyard Ramp – Foto ${i + 1}`;
+      const load    = i < 4 ? 'eager' : 'lazy';
+
+      const mainSlide = document.createElement('div');
+      mainSlide.className = 'swiper-slide';
+      mainSlide.innerHTML =
+        `<img class="slide-img" src="assets/${img}" alt="${alt}" loading="${load}">` +
+        `<div class="slide-caption">` +
+          `<p class="slide-num">Foto ${String(i + 1).padStart(2, '0')} / ${total}</p>` +
+          `<p class="slide-text">${caption}</p>` +
+        `</div>`;
+      mainContainer.appendChild(mainSlide);
+
+      const thumbSlide = document.createElement('div');
+      thumbSlide.className = 'swiper-slide';
+      thumbSlide.innerHTML = `<img class="thumb-img" src="assets/${img}" alt="${alt}" loading="lazy">`;
+      thumbContainer.appendChild(thumbSlide);
+    });
+
+    // ── Init Swipers ───────────────────────────────────────
+    const thumbSwiper = new Swiper('.thumb-swiper', {
+      spaceBetween: 5,
+      slidesPerView: 7,
+      freeMode: true,
+      watchSlidesProgress: true,
+      breakpoints: {
+        480:  { slidesPerView: 10 },
+        768:  { slidesPerView: 13 },
+        1024: { slidesPerView: 16 },
+      },
+    });
+
+    new Swiper('.main-swiper', {
+      loop: false,
+      keyboard: { enabled: true, onlyInViewport: true },
+      thumbs: { swiper: thumbSwiper },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+        dynamicBullets: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      a11y: {
+        prevSlideMessage: 'Vorheriges Bild',
+        nextSlideMessage: 'Nächstes Bild',
+      },
+    });
+  </script>
+</body>
+</html>
