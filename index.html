@@ -25,6 +25,85 @@
       font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
     }
 
+    /* ── Nav ─────────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.2rem;
+      z-index: 500;
+    }
+
+    .nav-toggle {
+      width: 2.6rem;
+      height: 2.6rem;
+      background: rgba(13,13,13,0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 0;
+      transition: border-color 0.2s;
+    }
+    .nav-toggle:hover { border-color: var(--accent); }
+
+    .nav-toggle span {
+      display: block;
+      width: 16px;
+      height: 1.5px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: center;
+    }
+
+    /* ── open state: hamburger → X ── */
+    .nav.open .nav-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav.open .nav-toggle span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav.open .nav-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ── overlay ── */
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(13,13,13,0.97);
+      z-index: 490;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .nav.open ~ .nav-overlay { display: flex; }
+
+    .nav-overlay a {
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+      padding: 0.6rem 1rem;
+      transition: color 0.2s;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: navItemIn 0.35s ease forwards;
+    }
+    .nav-overlay a:nth-child(1) { animation-delay: 0.05s; }
+    .nav-overlay a:nth-child(2) { animation-delay: 0.12s; }
+    .nav-overlay a:nth-child(3) { animation-delay: 0.19s; }
+
+    @keyframes navItemIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .nav-overlay a:hover { color: var(--accent); }
+
     /* ── Hero ───────────────────────────────────────────── */
     .hero {
       position: relative;
@@ -507,6 +586,18 @@
 </head>
 <body>
 
+  <!-- ─ Nav ───────────────────────────────────────────── -->
+  <nav class="nav" id="nav" aria-label="Navigation">
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menü öffnen" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="nav-overlay" id="nav-overlay">
+    <a href="#gallery"  class="nav-link">Baudokumentation</a>
+    <a href="#history"  class="nav-link">Geschichtliches zur Ramp</a>
+    <a href="#donate"   class="nav-link">Projekt&nbsp;unterstützen</a>
+  </div>
+
   <!-- ─ Hero ──────────────────────────────────────────── -->
   <header class="hero">
     <div class="hero-bg" aria-hidden="true">
@@ -557,7 +648,7 @@
     <p class="label">Über das Projekt</p>
     <p>Was als spontane Idee an einem Wochenende begann, wurde zu einem mehrwöchigen Bauprojekt im Hinterhof. Ziel war eine vollwertige Mini Ramp aus heimischen Materialien — kompakt, stabil und fahrbereit.</p>
     <p>Inspiriert von unzähligen Videos und eigenen Skizzen entstand ein Bauplan, der sich während des Baus noch mehrfach ändern sollte. Das Ergebnis spricht für sich — und rollt sich verdammt gut.</p>
-    <p style="margin-top:2rem; font-size:0.8rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--accent);">Geschichtliches zur Ramp</p>
+    <p id="history" style="margin-top:2rem; font-size:0.8rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--accent);">Geschichtliches zur Ramp</p>
     <p>Erste Ideen und Pläne entstanden im Herbst 2024. Der Spatenstich erfolgte im Mai 2025, die Fertigstellung Anfang Juli 2026 — gute eineinhalb Jahre Bauzeit.</p>
     <ul style="list-style:none; margin-top:1rem; display:flex; flex-direction:column; gap:0.5rem; align-items:center; color:#909090; font-size:0.93rem;">
       <li>100&thinsp;% Eigenleistung</li>
@@ -700,6 +791,31 @@
         nextSlideMessage: 'Nächstes Bild',
       },
     });
+    // ── Nav hamburger ──────────────────────────────────────
+    const nav       = document.getElementById('nav');
+    const navToggle = document.getElementById('nav-toggle');
+    const navOverlay = document.getElementById('nav-overlay');
+
+    function toggleNav() {
+      const isOpen = nav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+
+    navToggle.addEventListener('click', toggleNav);
+
+    navOverlay.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      });
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && nav.classList.contains('open')) toggleNav();
+    });
+
     // ── Donate: PayPal Modal ───────────────────────────────
     const modal        = document.getElementById('paypal-modal');
     const paypalTrigger = document.getElementById('paypal-trigger');
