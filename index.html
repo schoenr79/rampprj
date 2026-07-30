@@ -356,11 +356,12 @@
       line-height: 1.6;
     }
 
+    /* ── Donate cards ───────────────────────────────────── */
     .donate-cards {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 300px));
       gap: 1.5rem;
       justify-content: center;
-      flex-wrap: wrap;
     }
 
     .donate-card {
@@ -368,9 +369,6 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 2rem 1.8rem;
-      flex: 1;
-      min-width: 240px;
-      max-width: 320px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -383,23 +381,8 @@
       object-fit: contain;
     }
 
-    /* PayPal card */
-    .donate-card--paypal {
-      cursor: pointer;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-    .donate-card--paypal:hover {
-      border-color: #009cde;
-      transform: translateY(-2px);
-    }
-
-    .donate-card--paypal .donate-hint {
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    /* BTC card */
-    .btc-qr {
+    /* shared QR style */
+    .donate-qr {
       width: 150px;
       height: 150px;
       border-radius: 6px;
@@ -407,6 +390,22 @@
       padding: 6px;
     }
 
+    /* PayPal link button */
+    .btn-paypal {
+      display: inline-block;
+      padding: 0.55rem 1.4rem;
+      background: #009cde;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      margin-top: auto;
+    }
+    .btn-paypal:hover { opacity: 0.85; }
+
+    /* BTC address + copy */
     .btc-address {
       font-family: 'Courier New', monospace;
       font-size: 0.68rem;
@@ -428,89 +427,10 @@
       border-radius: 4px;
       cursor: pointer;
       transition: border-color 0.2s, color 0.2s;
+      margin-top: auto;
     }
     .btn-copy:hover  { border-color: var(--accent); color: var(--accent); }
     .btn-copy.copied { border-color: #22c55e; color: #22c55e; }
-
-    /* ── PayPal Modal ────────────────────────────────────── */
-    .modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.82);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-    }
-    .modal-backdrop.open { display: flex; }
-
-    .modal {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 2.2rem 2rem;
-      max-width: 360px;
-      width: 100%;
-      text-align: center;
-      position: relative;
-      animation: modalIn 0.2s ease;
-    }
-    @keyframes modalIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 0.8rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 1.4rem;
-      cursor: pointer;
-      line-height: 1;
-      padding: 0.2rem;
-    }
-    .modal-close:hover { color: var(--text); }
-
-    .modal img.paypal-qr {
-      width: 160px;
-      height: 160px;
-      background: #fff;
-      padding: 6px;
-      border-radius: 6px;
-      margin: 1rem auto;
-      display: block;
-    }
-
-    .modal-title {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.3rem;
-    }
-
-    .modal-desc {
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
-      line-height: 1.5;
-    }
-
-    .btn-paypal {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.7rem 1.8rem;
-      background: #009cde;
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.82rem;
-      border-radius: 4px;
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
-    .btn-paypal:hover { opacity: 0.85; }
 
     /* ── Footer ─────────────────────────────────────────── */
     footer {
@@ -665,15 +585,19 @@
     <div class="donate-cards">
 
       <!-- PayPal -->
-      <div class="donate-card donate-card--paypal" role="button" tabindex="0" aria-label="Mit PayPal spenden" id="paypal-trigger">
+      <div class="donate-card">
         <img src="assets/donate/paypal_logo.png" alt="PayPal" class="donate-logo">
-        <p class="donate-hint">Klicken zum Spenden via PayPal</p>
+        <img src="assets/donate/paypal_qr.png" alt="PayPal QR-Code" class="donate-qr">
+        <a href="https://www.paypal.com/donate/?hosted_button_id=PWFYBULV7TPBJ"
+           target="_blank" rel="noopener noreferrer" class="btn-paypal">
+          Zur Spendenseite ↗
+        </a>
       </div>
 
       <!-- Bitcoin -->
-      <div class="donate-card donate-card--btc">
+      <div class="donate-card">
         <img src="assets/donate/btc_logo.png" alt="Bitcoin" class="donate-logo">
-        <img src="assets/donate/btc_qr_address.png" alt="Bitcoin QR-Code" class="btc-qr">
+        <img src="assets/donate/btc_qr_address.png" alt="Bitcoin QR-Code" class="donate-qr">
         <p class="btc-address" id="btc-address">bc1qh7tkp8gmxq26e2ca8j64377ej3hgn3tae7j3tp</p>
         <button class="btn-copy" id="btn-copy" onclick="copyBtc()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -685,20 +609,6 @@
 
     </div>
   </section>
-
-  <!-- ─ PayPal Modal ──────────────────────────────────── -->
-  <div class="modal-backdrop" id="paypal-modal" role="dialog" aria-modal="true" aria-label="PayPal Spende">
-    <div class="modal">
-      <button class="modal-close" id="modal-close" aria-label="Schließen">&times;</button>
-      <p class="modal-title">Via PayPal spenden</p>
-      <p class="modal-desc">QR-Code scannen oder direkt zur Spendenseite</p>
-      <img src="assets/donate/paypal_qr.png" alt="PayPal QR-Code" class="paypal-qr">
-      <a href="https://www.paypal.com/donate/?hosted_button_id=PWFYBULV7TPBJ"
-         target="_blank" rel="noopener noreferrer" class="btn-paypal">
-        Jetzt bei PayPal spenden ↗
-      </a>
-    </div>
-  </div>
 
   <!-- ─ Footer ─────────────────────────────────────────── -->
   <footer>
@@ -815,20 +725,6 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && nav.classList.contains('open')) toggleNav();
     });
-
-    // ── Donate: PayPal Modal ───────────────────────────────
-    const modal        = document.getElementById('paypal-modal');
-    const paypalTrigger = document.getElementById('paypal-trigger');
-    const modalClose   = document.getElementById('modal-close');
-
-    function openModal()  { modal.classList.add('open'); document.body.style.overflow = 'hidden'; }
-    function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
-
-    paypalTrigger.addEventListener('click', openModal);
-    paypalTrigger.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openModal(); });
-    modalClose.addEventListener('click', closeModal);
-    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
     // ── Donate: Copy BTC address ───────────────────────────
     function copyBtc() {
