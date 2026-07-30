@@ -25,6 +25,85 @@
       font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
     }
 
+    /* ── Nav ─────────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.2rem;
+      z-index: 500;
+    }
+
+    .nav-toggle {
+      width: 2.6rem;
+      height: 2.6rem;
+      background: rgba(13,13,13,0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 0;
+      transition: border-color 0.2s;
+    }
+    .nav-toggle:hover { border-color: var(--accent); }
+
+    .nav-toggle span {
+      display: block;
+      width: 16px;
+      height: 1.5px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: center;
+    }
+
+    /* ── open state: hamburger → X ── */
+    .nav.open .nav-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav.open .nav-toggle span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav.open .nav-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ── overlay ── */
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(13,13,13,0.97);
+      z-index: 490;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .nav.open ~ .nav-overlay { display: flex; }
+
+    .nav-overlay a {
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+      padding: 0.6rem 1rem;
+      transition: color 0.2s;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: navItemIn 0.35s ease forwards;
+    }
+    .nav-overlay a:nth-child(1) { animation-delay: 0.05s; }
+    .nav-overlay a:nth-child(2) { animation-delay: 0.12s; }
+    .nav-overlay a:nth-child(3) { animation-delay: 0.19s; }
+
+    @keyframes navItemIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .nav-overlay a:hover { color: var(--accent); }
+
     /* ── Hero ───────────────────────────────────────────── */
     .hero {
       position: relative;
@@ -259,6 +338,100 @@
     }
     .about p + p { margin-top: 1.1rem; }
 
+    /* ── Donate ─────────────────────────────────────────── */
+    .donate {
+      max-width: 780px;
+      margin: 0 auto 6rem;
+      padding: 5rem 1.5rem 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .donate .label { margin-bottom: 0.7rem; }
+
+    .donate-sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+
+    /* ── Donate cards ───────────────────────────────────── */
+    .donate-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 300px));
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .donate-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .donate-logo {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* shared QR style */
+    .donate-qr {
+      width: 150px;
+      height: 150px;
+      border-radius: 6px;
+      background: #fff;
+      padding: 6px;
+    }
+
+    /* PayPal link button */
+    .btn-paypal {
+      display: inline-block;
+      padding: 0.55rem 1.4rem;
+      background: #009cde;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      margin-top: auto;
+    }
+    .btn-paypal:hover { opacity: 0.85; }
+
+    /* BTC address + copy */
+    .btc-address {
+      font-family: 'Courier New', monospace;
+      font-size: 0.68rem;
+      color: #999;
+      word-break: break-all;
+      line-height: 1.5;
+      max-width: 220px;
+    }
+
+    .btn-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.78rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      margin-top: auto;
+    }
+    .btn-copy:hover  { border-color: var(--accent); color: var(--accent); }
+    .btn-copy.copied { border-color: #22c55e; color: #22c55e; }
+
     /* ── Footer ─────────────────────────────────────────── */
     footer {
       text-align: center;
@@ -333,6 +506,18 @@
 </head>
 <body>
 
+  <!-- ─ Nav ───────────────────────────────────────────── -->
+  <nav class="nav" id="nav" aria-label="Navigation">
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menü öffnen" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="nav-overlay" id="nav-overlay">
+    <a href="#gallery"  class="nav-link">Baudokumentation</a>
+    <a href="#history"  class="nav-link">Geschichtliches zur Ramp</a>
+    <a href="#donate"   class="nav-link">Projekt&nbsp;unterstützen</a>
+  </div>
+
   <!-- ─ Hero ──────────────────────────────────────────── -->
   <header class="hero">
     <div class="hero-bg" aria-hidden="true">
@@ -383,6 +568,46 @@
     <p class="label">Über das Projekt</p>
     <p>Was als spontane Idee an einem Wochenende begann, wurde zu einem mehrwöchigen Bauprojekt im Hinterhof. Ziel war eine vollwertige Mini Ramp aus heimischen Materialien — kompakt, stabil und fahrbereit.</p>
     <p>Inspiriert von unzähligen Videos und eigenen Skizzen entstand ein Bauplan, der sich während des Baus noch mehrfach ändern sollte. Das Ergebnis spricht für sich — und rollt sich verdammt gut.</p>
+    <p id="history" style="margin-top:2rem; font-size:0.8rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--accent);">Geschichtliches zur Ramp</p>
+    <p>Erste Ideen und Pläne entstanden im Herbst 2024. Der Spatenstich erfolgte im Mai 2025, die Fertigstellung Anfang Juli 2026 — gute eineinhalb Jahre Bauzeit.</p>
+    <ul style="list-style:none; margin-top:1rem; display:flex; flex-direction:column; gap:0.5rem; align-items:center; color:#909090; font-size:0.93rem;">
+      <li>100&thinsp;% Eigenleistung</li>
+      <li>Auch recycelte Materialien kamen zum Einsatz</li>
+      <li>Privat finanziert</li>
+    </ul>
+  </section>
+
+  <!-- ─ Donate ────────────────────────────────────────── -->
+  <section class="donate" id="donate">
+    <p class="label">Projekt unterstützen</p>
+    <p class="donate-sub">Wenn dir das Projekt gefällt und du den Bau der nächsten Ramp unterstützen möchtest —<br>jeder Beitrag hilft weiter.</p>
+
+    <div class="donate-cards">
+
+      <!-- PayPal -->
+      <div class="donate-card">
+        <img src="assets/donate/paypal_logo.png" alt="PayPal" class="donate-logo">
+        <img src="assets/donate/paypal_qr.png" alt="PayPal QR-Code" class="donate-qr">
+        <a href="https://www.paypal.com/donate/?hosted_button_id=PWFYBULV7TPBJ"
+           target="_blank" rel="noopener noreferrer" class="btn-paypal">
+          Zur Spendenseite ↗
+        </a>
+      </div>
+
+      <!-- Bitcoin -->
+      <div class="donate-card">
+        <img src="assets/donate/btc_logo.png" alt="Bitcoin" class="donate-logo">
+        <img src="assets/donate/btc_qr_address.png" alt="Bitcoin QR-Code" class="donate-qr">
+        <p class="btc-address" id="btc-address">bc1qh7tkp8gmxq26e2ca8j64377ej3hgn3tae7j3tp</p>
+        <button class="btn-copy" id="btn-copy" onclick="copyBtc()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          Adresse kopieren
+        </button>
+      </div>
+
+    </div>
   </section>
 
   <!-- ─ Footer ─────────────────────────────────────────── -->
@@ -476,6 +701,44 @@
         nextSlideMessage: 'Nächstes Bild',
       },
     });
+    // ── Nav hamburger ──────────────────────────────────────
+    const nav       = document.getElementById('nav');
+    const navToggle = document.getElementById('nav-toggle');
+    const navOverlay = document.getElementById('nav-overlay');
+
+    function toggleNav() {
+      const isOpen = nav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+
+    navToggle.addEventListener('click', toggleNav);
+
+    navOverlay.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      });
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && nav.classList.contains('open')) toggleNav();
+    });
+
+    // ── Donate: Copy BTC address ───────────────────────────
+    function copyBtc() {
+      const addr = document.getElementById('btc-address').textContent;
+      const btn  = document.getElementById('btn-copy');
+      navigator.clipboard.writeText(addr).then(() => {
+        btn.classList.add('copied');
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Kopiert!`;
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Adresse kopieren`;
+        }, 2500);
+      });
+    }
   </script>
 </body>
 </html>
