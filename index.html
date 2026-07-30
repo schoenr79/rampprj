@@ -257,6 +257,67 @@
       font-size: 0.72rem;
       letter-spacing: 0.06em;
     }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .hero-sub {
+        font-size: 0.93rem;
+        margin-top: 1.2rem;
+      }
+
+      .hero-cta {
+        margin-top: 1.6rem;
+        padding: 0.85rem 2rem;
+        font-size: 0.82rem;
+      }
+
+      .section-intro {
+        padding: 3rem 1.2rem 1.8rem;
+      }
+
+      .gallery-wrap {
+        padding: 0 0 3rem;
+      }
+
+      .main-swiper {
+        border-radius: 0;
+      }
+
+      /* Hide arrows on touch – swipe is enough */
+      .swiper-button-prev,
+      .swiper-button-next {
+        display: none;
+      }
+
+      .slide-caption {
+        padding: 0.9rem 1rem 1.1rem;
+      }
+
+      .slide-text {
+        font-size: 0.85rem;
+        line-height: 1.6;
+      }
+
+      .thumb-swiper {
+        height: 52px;
+        margin-top: 5px !important;
+      }
+
+      .about {
+        padding-top: 3rem;
+        margin-bottom: 3.5rem;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .thumb-swiper {
+        height: 42px;
+      }
+
+      .slide-caption {
+        padding: 0.75rem 0.9rem 1rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -383,6 +444,7 @@
 
     new Swiper('.main-swiper', {
       loop: false,
+      grabCursor: true,
       keyboard: { enabled: true, onlyInViewport: true },
       thumbs: { swiper: thumbSwiper },
       pagination: {
