@@ -259,6 +259,180 @@
     }
     .about p + p { margin-top: 1.1rem; }
 
+    /* ── Donate ─────────────────────────────────────────── */
+    .donate {
+      max-width: 780px;
+      margin: 0 auto 6rem;
+      padding: 5rem 1.5rem 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .donate .label { margin-bottom: 0.7rem; }
+
+    .donate-sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+
+    .donate-cards {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .donate-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem 1.8rem;
+      flex: 1;
+      min-width: 240px;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .donate-logo {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* PayPal card */
+    .donate-card--paypal {
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .donate-card--paypal:hover {
+      border-color: #009cde;
+      transform: translateY(-2px);
+    }
+
+    .donate-card--paypal .donate-hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* BTC card */
+    .btc-qr {
+      width: 150px;
+      height: 150px;
+      border-radius: 6px;
+      background: #fff;
+      padding: 6px;
+    }
+
+    .btc-address {
+      font-family: 'Courier New', monospace;
+      font-size: 0.68rem;
+      color: #999;
+      word-break: break-all;
+      line-height: 1.5;
+      max-width: 220px;
+    }
+
+    .btn-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.78rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-copy:hover  { border-color: var(--accent); color: var(--accent); }
+    .btn-copy.copied { border-color: #22c55e; color: #22c55e; }
+
+    /* ── PayPal Modal ────────────────────────────────────── */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.82);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2.2rem 2rem;
+      max-width: 360px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      animation: modalIn 0.2s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 0.8rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0.2rem;
+    }
+    .modal-close:hover { color: var(--text); }
+
+    .modal img.paypal-qr {
+      width: 160px;
+      height: 160px;
+      background: #fff;
+      padding: 6px;
+      border-radius: 6px;
+      margin: 1rem auto;
+      display: block;
+    }
+
+    .modal-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .modal-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .btn-paypal {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.7rem 1.8rem;
+      background: #009cde;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.82rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-paypal:hover { opacity: 0.85; }
+
     /* ── Footer ─────────────────────────────────────────── */
     footer {
       text-align: center;
@@ -392,6 +566,49 @@
     </ul>
   </section>
 
+  <!-- ─ Donate ────────────────────────────────────────── -->
+  <section class="donate" id="donate">
+    <p class="label">Projekt unterstützen</p>
+    <p class="donate-sub">Wenn dir das Projekt gefällt und du den Bau der nächsten Ramp unterstützen möchtest —<br>jeder Beitrag hilft weiter.</p>
+
+    <div class="donate-cards">
+
+      <!-- PayPal -->
+      <div class="donate-card donate-card--paypal" role="button" tabindex="0" aria-label="Mit PayPal spenden" id="paypal-trigger">
+        <img src="assets/donate/paypal_logo.png" alt="PayPal" class="donate-logo">
+        <p class="donate-hint">Klicken zum Spenden via PayPal</p>
+      </div>
+
+      <!-- Bitcoin -->
+      <div class="donate-card donate-card--btc">
+        <img src="assets/donate/btc_logo.png" alt="Bitcoin" class="donate-logo">
+        <img src="assets/donate/btc_qr_address.png" alt="Bitcoin QR-Code" class="btc-qr">
+        <p class="btc-address" id="btc-address">bc1qh7tkp8gmxq26e2ca8j64377ej3hgn3tae7j3tp</p>
+        <button class="btn-copy" id="btn-copy" onclick="copyBtc()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          Adresse kopieren
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─ PayPal Modal ──────────────────────────────────── -->
+  <div class="modal-backdrop" id="paypal-modal" role="dialog" aria-modal="true" aria-label="PayPal Spende">
+    <div class="modal">
+      <button class="modal-close" id="modal-close" aria-label="Schließen">&times;</button>
+      <p class="modal-title">Via PayPal spenden</p>
+      <p class="modal-desc">QR-Code scannen oder direkt zur Spendenseite</p>
+      <img src="assets/donate/paypal_qr.png" alt="PayPal QR-Code" class="paypal-qr">
+      <a href="https://www.paypal.com/donate/?hosted_button_id=PWFYBULV7TPBJ"
+         target="_blank" rel="noopener noreferrer" class="btn-paypal">
+        Jetzt bei PayPal spenden ↗
+      </a>
+    </div>
+  </div>
+
   <!-- ─ Footer ─────────────────────────────────────────── -->
   <footer>
     <p>Backyard Ramp &mdash; Selbstbauprojekt &nbsp;·&nbsp; Alle Fotos entstanden während des Baus</p>
@@ -483,6 +700,33 @@
         nextSlideMessage: 'Nächstes Bild',
       },
     });
+    // ── Donate: PayPal Modal ───────────────────────────────
+    const modal        = document.getElementById('paypal-modal');
+    const paypalTrigger = document.getElementById('paypal-trigger');
+    const modalClose   = document.getElementById('modal-close');
+
+    function openModal()  { modal.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
+
+    paypalTrigger.addEventListener('click', openModal);
+    paypalTrigger.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openModal(); });
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── Donate: Copy BTC address ───────────────────────────
+    function copyBtc() {
+      const addr = document.getElementById('btc-address').textContent;
+      const btn  = document.getElementById('btn-copy');
+      navigator.clipboard.writeText(addr).then(() => {
+        btn.classList.add('copied');
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Kopiert!`;
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Adresse kopieren`;
+        }, 2500);
+      });
+    }
   </script>
 </body>
 </html>
