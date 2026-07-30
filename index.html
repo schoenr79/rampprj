@@ -613,6 +613,8 @@
   <!-- ─ Footer ─────────────────────────────────────────── -->
   <footer>
     <p>Backyard Ramp &mdash; Selbstbauprojekt &nbsp;·&nbsp; Alle Fotos entstanden während des Baus</p>
+    <p style="margin-top:0.5rem">Martin Schnorr &amp; Roland Schön</p>
+    <p style="margin-top:0.4rem">&copy;<span id="footer-year"></span> &mdash; All rights reserved</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -701,6 +703,8 @@
         nextSlideMessage: 'Nächstes Bild',
       },
     });
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+
     // ── Nav hamburger ──────────────────────────────────────
     const nav       = document.getElementById('nav');
     const navToggle = document.getElementById('nav-toggle');
